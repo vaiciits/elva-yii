@@ -21,3 +21,45 @@ services:
       - ~/.composer-docker/cache:/root/.composer/cache:delegated
       # Mount source-code for development
       - ./:/app
+    environment:
+      DB_DSN: "sqlsrv:Server=mssql;Database=works"
+      DB_USERNAME: "sa"
+      DB_PASSWORD: "password123!"
+
+  # mssql:
+  #   build: db
+  #   ports:
+  #     - "1433:1433"
+  #   volumes:
+  #     - ./mssql_data:/var/opt/mssql
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "#password123sdJwnwlk"
+      MSSQL_PID: "Developer"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    restart: always
+    healthcheck:
+      test: [ "CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P #password123sdJwnwlk -C -Q 'SELECT 1' || exit 1" ]
+      interval: 10s
+      retries: 3
+      start_period: 10s
+      timeout: 3s
+
+  sqlserver.configurator:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    volumes:
+      - ./init_db:/docker-entrypoint-initdb.d
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    command: >
+      bash -c ' /opt/mssql-tools18/bin/sqlcmd -S sqlserver -U sa -P #password123sdJwnwlk -C -d master -i docker-entrypoint-initdb.d/init.sql; echo "All done!"; '
+
+volumes:
+  sqlserver_data:
