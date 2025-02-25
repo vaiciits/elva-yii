@@ -30,3 +30,6 @@ RUN pecl install sqlsrv pdo_sqlsrv \
 
 # Clean up unnecessary files
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Enable Mod_Rewrite
+RUN a2enmod rewrite
