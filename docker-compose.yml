@@ -22,16 +22,9 @@ services:
       # Mount source-code for development
       - ./:/app
     environment:
-      DB_DSN: "sqlsrv:Server=mssql;Database=works"
-      DB_USERNAME: "sa"
+      DB_DSN: "sqlsrv:Server=sqlserver;Database=master"
+      DB_USERNAME: "newuser"
       DB_PASSWORD: "password123!"
-
-  # mssql:
-  #   build: db
-  #   ports:
-  #     - "1433:1433"
-  #   volumes:
-  #     - ./mssql_data:/var/opt/mssql
 
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
