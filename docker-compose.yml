@@ -23,8 +23,8 @@ services:
       - ./:/app
     environment:
       DB_DSN: "sqlsrv:Server=sqlserver;Database=master"
-      DB_USERNAME: "newuser"
-      DB_PASSWORD: "password123!"
+      DB_USERNAME: "sa"
+      DB_PASSWORD: "#password123sdJwnwlk"
 
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
@@ -42,7 +42,7 @@ services:
       interval: 10s
       retries: 3
       start_period: 10s
-      timeout: 3s
+      timeout: 10s
 
   sqlserver.configurator:
     image: mcr.microsoft.com/mssql/server:2022-latest
