@@ -31,6 +31,9 @@ class ConstructionSiteRepository
 
     public function getOne(int $id): ?ConstructionSite
     {
-        return ConstructionSite::findOne($id);
+        return ConstructionSite::find()
+            ->where(['id' => $id])
+            ->with(['workItems', 'employeesWithMissingAccess'])
+            ->one();
     }
 }

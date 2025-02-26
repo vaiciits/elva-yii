@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace common\models;
 
 use Yii;
+use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "CONSTRUCTION_SITE".
@@ -16,11 +17,10 @@ use Yii;
  * @property int|null $access
  *
  * @property WorkItem[] $workItems
+ * @property Employee[] $employeesWithMissingAccess
  */
 class ConstructionSite extends \yii\db\ActiveRecord
 {
-
-
     /**
      * {@inheritdoc}
      */
@@ -62,8 +62,21 @@ class ConstructionSite extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getWorkItems()
+    public function getWorkItems(): ActiveQuery
     {
-        return $this->hasMany(WorkItem::class, ['construction_site_id' => 'id']);
+        return $this->hasMany(
+            WorkItem::class,
+            ['construction_site_id' => 'id'],
+        );
+    }
+
+    public function getEmployeesWithMissingAccess(): ActiveQuery
+    {
+        return $this->hasMany(Employee::class, ['id' => 'employee_id'])
+            ->viaTable(
+                WorkItem::tableName() . ' wi',
+                ['construction_site_id' => 'id'],
+            )
+            ->where(['>', Employee::tableName() . '.access', $this->access]);
     }
 }

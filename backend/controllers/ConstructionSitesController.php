@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace backend\controllers;
 
-use common\models\ConstructionSite;
 use common\services\ConstructionSiteService;
+use common\structures\ConstructionSiteResponse;
 use common\structures\PagedConstructionSites;
 use Yii;
 use yii\rest\Controller;
@@ -31,7 +31,7 @@ class ConstructionSitesController extends Controller
         return new ConstructionSiteService()->getPagedSites($offset, $limit);
     }
 
-    public function actionGet(int $id): ConstructionSite
+    public function actionGet(int $id): ConstructionSiteResponse
     {
         return new ConstructionSiteService()->getSite($id);
     }
