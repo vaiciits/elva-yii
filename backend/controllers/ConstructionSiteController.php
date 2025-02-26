@@ -32,6 +32,9 @@ class ConstructionSiteController extends Controller
     ): array {
         $repository = new ConstructionSiteRepository;
 
-        return $repository->getAllPaged($offset ?? 0, $limit ?? 20);
+        return $repository->getAllPaged(
+            $offset ?? ConstructionSiteRepository::OFFSET,
+            $limit ?? ConstructionSiteRepository::LIMIT,
+        );
     }
 }
