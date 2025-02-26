@@ -9,6 +9,9 @@ use Exception;
 use Faker\Factory;
 use Faker\Generator;
 
+/**
+ * Data seeder for db.
+ */
 class SeedService
 {
     private Generator $faker;
