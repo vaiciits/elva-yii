@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace backend\controllers;
 
-use common\models\ConstructionSite;
-use common\repositories\ConstructionSiteRepository;
+use common\services\ConstructionSiteService;
+use common\structures\PagedConstructionSites;
 use Yii;
 use yii\rest\Controller;
 use yii\web\Response;
@@ -23,18 +23,10 @@ class ConstructionSiteController extends Controller
         return $before;
     }
 
-    /**
-     * @return ConstructionSite[]
-     */
     public function actionIndex(
         ?int $offset = null,
         ?int $limit = null,
-    ): array {
-        $repository = new ConstructionSiteRepository;
-
-        return $repository->getAllPaged(
-            $offset ?? ConstructionSiteRepository::OFFSET,
-            $limit ?? ConstructionSiteRepository::LIMIT,
-        );
+    ): PagedConstructionSites {
+        return new ConstructionSiteService()->getPagedSites($offset, $limit);
     }
 }

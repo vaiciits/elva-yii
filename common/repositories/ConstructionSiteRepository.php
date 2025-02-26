@@ -23,4 +23,9 @@ class ConstructionSiteRepository
             ->limit($limit)
             ->all();
     }
+
+    public function getAllPagedCount(): int
+    {
+        return (int) ConstructionSite::find()->count();
+    }
 }
