@@ -38,3 +38,23 @@ Uzdevums
 6. Izveidot API, kur ārēja caurlaižu sistēma var pieprasīt informāciju par Būvobjektu, lai
    uzzinātu kuriem darbiniekiem ir nepieciešama pieeja noteiktam būvobjektam, darbu
    izpildei.
+
+## Setup
+
+Setup docker. Don't worry for configurator for failing.
+
+```bash
+docker-compose up -d
+```
+
+After yii backend container is ready,
+
+```bash
+docker exec -it elva-yii-backend-1 bash
+```
+
+Run data seeders (inside the container)
+
+```bash
+yii seed
+```
