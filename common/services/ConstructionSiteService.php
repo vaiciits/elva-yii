@@ -4,13 +4,27 @@ declare(strict_types=1);
 
 namespace common\services;
 
+use common\models\ConstructionSite;
 use common\repositories\ConstructionSiteRepository;
 use common\structures\PagedConstructionSites;
 use yii\web\BadRequestHttpException;
+use yii\web\NotFoundHttpException;
 
 class ConstructionSiteService
 {
     public const int LIMIT_MAX = 100;
+
+    public function getSite(int $id): ?ConstructionSite
+    {
+        $repository = new ConstructionSiteRepository;
+
+        $site = $repository->getOne($id);
+        if (null === $site) {
+            throw new NotFoundHttpException();
+        }
+
+        return $site;
+    }
 
     public function getPagedSites(
         ?int $offset,

@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace backend\controllers;
 
+use common\models\ConstructionSite;
 use common\services\ConstructionSiteService;
 use common\structures\PagedConstructionSites;
 use Yii;
 use yii\rest\Controller;
 use yii\web\Response;
 
-class ConstructionSiteController extends Controller
+class ConstructionSitesController extends Controller
 {
     public $enableCsrfValidation = false;
 
@@ -28,5 +29,10 @@ class ConstructionSiteController extends Controller
         ?int $limit = null,
     ): PagedConstructionSites {
         return new ConstructionSiteService()->getPagedSites($offset, $limit);
+    }
+
+    public function actionGet(int $id): ConstructionSite
+    {
+        return new ConstructionSiteService()->getSite($id);
     }
 }

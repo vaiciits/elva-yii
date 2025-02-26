@@ -28,4 +28,9 @@ class ConstructionSiteRepository
     {
         return (int) ConstructionSite::find()->count();
     }
+
+    public function getOne(int $id): ?ConstructionSite
+    {
+        return ConstructionSite::findOne($id);
+    }
 }

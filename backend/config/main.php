@@ -40,7 +40,10 @@ return [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'rules' => [],
+            'rules' => [
+                'GET construction-sites/<id:\d+>' => 'construction-sites/get',
+                'GET construction-sites/' => 'construction-sites/index',
+            ],
         ],
     ],
     'params' => $params,
