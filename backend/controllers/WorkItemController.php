@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace backend\controllers;
 
-use common\models\WorkItem;
+use common\models\Employee;
+use common\repositories\WorkItemRepository;
+use Yii;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 
@@ -12,16 +14,14 @@ class WorkItemController extends Controller
 {
     public function actionIndex(): string
     {
+        /** @var Employee */
+        $employee = Yii::$app->user->getIdentity();
+
         $dataProvider = new ActiveDataProvider([
-            'query' => WorkItem::find(),  // Your query
+            'query' => new WorkItemRepository()->getQueryByEmployee($employee),
             'pagination' => [
                 'pageSize' => 10, // Adjust page size as needed
             ],
-            // 'sort' => [
-            //     'defaultOrder' => [
-            //         'id' => SORT_DESC,
-            //     ],
-            // ],
         ]);
 
         return $this->render(

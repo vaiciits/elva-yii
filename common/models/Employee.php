@@ -22,7 +22,9 @@ use yii\web\IdentityInterface;
  */
 class Employee extends \yii\db\ActiveRecord implements IdentityInterface
 {
-
+    final public const int ROLE_ADMIN = 1;
+    final public const int ROLE_MANAGER = 2;
+    final public const int ROLE_EMPLOYEE = 3;
 
     /**
      * {@inheritdoc}
@@ -108,5 +110,10 @@ class Employee extends \yii\db\ActiveRecord implements IdentityInterface
     public function validateAuthKey($authKey)
     {
         return $this->getAuthKey() === $authKey;
+    }
+
+    public function getFullName(): string
+    {
+        return implode(' ', [$this->name, $this->surname]);
     }
 }

@@ -74,3 +74,7 @@ Individual construction site and missing access are available here (example - ht
 Exposed only `backend` due to development device limitations. Otherwise all frontend would have been in `frontend`.
 
 Used singular and plural forms for frontend and API endpoints respectively.
+
+## Bussines logic
+
+Manager has employees that have tasks in the same object.
