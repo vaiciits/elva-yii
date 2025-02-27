@@ -13,6 +13,7 @@ use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
+use yii\web\Response;
 
 class ConstructionSiteController extends Controller
 {
@@ -71,7 +72,8 @@ class ConstructionSiteController extends Controller
             throw new ForbiddenHttpException("Your access level is not sufficient");
         }
 
-        $workItems = new WorkItemService()->getItemsByEmployee($employee);
+        $workItems = new WorkItemService()
+            ->getItemsByEmployeeAndSiteId($employee, $id);
 
         return $this->render(
             'view',
@@ -80,5 +82,29 @@ class ConstructionSiteController extends Controller
                 'workItems' => $workItems,
             ],
         );
+    }
+
+    public function actionCreate(): string|Response
+    {
+        $site = new ConstructionSite();
+
+        if ($this->loadFromRequestAndSave($site)) {
+            return $this->redirect(['view', 'id' => $site->id]);
+        }
+
+        return $this->render(
+            'create',
+            [
+                'site' => $site,
+            ],
+        );
+    }
+
+    /**
+     * Handle POST data.
+     */
+    private function loadFromRequestAndSave(ConstructionSite $site): bool
+    {
+        return $site->load(Yii::$app->request->post()) && $site->save();
     }
 }

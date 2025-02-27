@@ -38,8 +38,10 @@ class WorkItemService
     /**
      * @return WorkItem[]
      */
-    public function getItemsByEmployee(Employee $employee): array
-    {
+    public function getItemsByEmployeeAndSiteId(
+        Employee $employee,
+        int $siteId,
+    ): array {
         $query = WorkItem::find()
             ->leftJoin(
                 ConstructionSite::tableName(),
@@ -50,6 +52,9 @@ class WorkItemService
                 ),
             )
             ->where([
+                'construction_site_id' => $siteId,
+            ])
+            ->andWhere([
                 '>',
                 'access',
                 $employee->access,
