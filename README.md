@@ -53,6 +53,12 @@ After yii backend container is ready,
 docker exec -it elva-yii-backend-1 bash
 ```
 
+Install composer packages (inside the container)
+
+```bash
+composer install
+```
+
 Run data seeders (inside the container)
 
 ```bash
