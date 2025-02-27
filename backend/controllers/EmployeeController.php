@@ -12,6 +12,7 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 class EmployeeController extends Controller
 {
@@ -81,5 +82,37 @@ class EmployeeController extends Controller
                 'employee' => $employee,
             ],
         );
+    }
+
+    /**
+     * @throws ForbiddenHttpException
+     */
+    public function actionCreate(): string|Response
+    {
+        $user = App::user();
+        if (!$user->isAdmin()) {
+            throw new ForbiddenHttpException("Not for you");
+        }
+
+        $employee = new Employee();
+
+        if ($this->loadFromRequestAndSave($employee)) {
+            return $this->redirect(['view', 'id' => $employee->id]);
+        }
+
+        return $this->render(
+            'create',
+            [
+                'employee' => $employee,
+            ],
+        );
+    }
+
+    /**
+     * Handle POST data.
+     */
+    private function loadFromRequestAndSave(Employee $employee): bool
+    {
+        return $employee->load(Yii::$app->request->post()) && $employee->save();
     }
 }
