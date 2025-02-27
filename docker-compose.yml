@@ -22,7 +22,7 @@ services:
       # Mount source-code for development
       - ./:/app
     environment:
-      DB_DSN: "sqlsrv:Server=sqlserver;Database=master"
+      DB_DSN: "sqlsrv:Server=sqlserver;Database=master;TrustServerCertificate=YES"
       DB_USERNAME: "sa"
       DB_PASSWORD: "#password123sdJwnwlk"
 
@@ -40,7 +40,7 @@ services:
     healthcheck:
       test: [ "CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P #password123sdJwnwlk -C -Q 'SELECT 1' || exit 1" ]
       interval: 10s
-      retries: 3
+      retries: 10
       start_period: 10s
       timeout: 10s
 
