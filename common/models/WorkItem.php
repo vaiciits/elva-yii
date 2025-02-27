@@ -54,8 +54,8 @@ class WorkItem extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => 'Name',
             'description' => 'Description',
-            'construction_site_id' => 'Construction Site ID',
-            'employee_id' => 'Employee ID',
+            'construction_site_id' => 'Construction Site',
+            'employee_id' => 'Employee',
         ];
     }
 

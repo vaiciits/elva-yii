@@ -49,7 +49,7 @@ echo GridView::widget([
         ],
         [
             'class' => ActionColumn::class,
-            'template' => '{update} {delete}',
+            'template' => '{view} {update} {delete}',
             'urlCreator' => function ($action, $model, $key, $index) {
                 return ["work-item/{$model->id}/$action"];
             },

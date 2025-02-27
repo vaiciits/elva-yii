@@ -11,13 +11,12 @@ use yii\widgets\ActiveForm;
 /** @var $this yii\web\View */
 /** @var $workItem app\models\WorkItem */
 
-$this->title = 'Update Work Item: ' . $workItem->name;
+$this->title = 'Create Work Item';
 $this->params['breadcrumbs'][] = ['label' => 'Work Items', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $workItem->name, 'url' => ['view', 'id' => $workItem->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = 'Create';
 ?>
 
-<div class="work-item-update">
+<div class="work-item-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -38,7 +37,7 @@ $this->params['breadcrumbs'][] = 'Update';
     ) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Update', ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton('Create', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

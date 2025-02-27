@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace backend\controllers;
 
 use common\models\Employee;
+use common\models\WorkItem;
 use common\repositories\WorkItemRepository;
 use common\services\WorkItemService;
 use Exception;
@@ -37,6 +38,25 @@ class WorkItemController extends Controller
         );
     }
 
+    public function actionView(int $id): string
+    {
+        /** @var Employee */
+        $employee = Yii::$app->user->getIdentity();
+        $workItem = new WorkItemService()->getItemByEmployee(
+            $id,
+            $employee,
+            [
+                Employee::ROLE_ADMIN,
+                Employee::ROLE_MANAGER,
+                Employee::ROLE_EMPLOYEE,
+            ],
+        );
+
+        return $this->render('view', [
+            'workItem' => $workItem,
+        ]);
+    }
+
     /**
      * @throws ForbiddenHttpException
      * @throws NotFoundHttpException
@@ -66,10 +86,35 @@ class WorkItemController extends Controller
         $employee = Yii::$app->user->getIdentity();
         $workItem = new WorkItemService()->getItemByEmployee($id, $employee);
 
-        if ($workItem->load(Yii::$app->request->post()) && $workItem->save()) {
-            return $this->redirect(['index']);
+        if ($this->loadFromRequestAndSave($workItem)) {
+            return $this->redirect(['view', 'id' => $workItem->id]);
         }
 
-        return $this->render('update', ['workItem' => $workItem]);
+        return $this->render('update', [
+            'workItem' => $workItem,
+            'isCreate' => false,
+        ]);
+    }
+
+    public function actionCreate(): string|Response
+    {
+        $workItem = new WorkItem();
+
+        if ($this->loadFromRequestAndSave($workItem)) {
+            return $this->redirect(['view', 'id' => $workItem->id]);
+        }
+
+        return $this->render('update', [
+            'workItem' => $workItem,
+            'isCreate' => true,
+        ]);
+    }
+
+    /**
+     * Handle POST data.
+     */
+    private function loadFromRequestAndSave(WorkItem $workItem): bool
+    {
+        return $workItem->load(Yii::$app->request->post()) && $workItem->save();
     }
 }

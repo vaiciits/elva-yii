@@ -12,12 +12,17 @@ use yii\web\NotFoundHttpException;
 class WorkItemService
 {
     /**
+     * @param int[] $allowedRoles
+     *
      * @throws ForbiddenHttpException
      * @throws NotFoundHttpException
      */
-    public function getItemByEmployee(int $id, Employee $employee): WorkItem
-    {
-        if ($employee->role !== Employee::ROLE_ADMIN) {
+    public function getItemByEmployee(
+        int $id,
+        Employee $employee,
+        array $allowedRoles = [Employee::ROLE_ADMIN],
+    ): WorkItem {
+        if (!in_array($employee->role, $allowedRoles)) {
             throw new ForbiddenHttpException("Not allowed.");
         }
 
