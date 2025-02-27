@@ -53,6 +53,10 @@ return [
                 'construction-site/<id:\d+>/update' => 'construction-site/update',
                 'construction-site/<id:\d+>/delete' => 'construction-site/delete',
 
+                'employee/<id:\d+>/view' => 'employee/view',
+                'employee/<id:\d+>/update' => 'employee/update',
+                'employee/<id:\d+>/delete' => 'employee/delete',
+
                 'work-item/<id:\d+>/update' => 'work-item/update',
                 'work-item/<id:\d+>/delete' => 'work-item/delete',
                 'work-item/<id:\d+>/view' => 'work-item/view',

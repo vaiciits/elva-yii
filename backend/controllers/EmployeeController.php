@@ -11,6 +11,7 @@ use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
+use yii\web\NotFoundHttpException;
 
 class EmployeeController extends Controller
 {
@@ -33,10 +34,13 @@ class EmployeeController extends Controller
         ];
     }
 
+    /**
+     * @throws ForbiddenHttpException
+     */
     public function actionIndex(): string
     {
-        $employee = App::user();
-        if ($employee->role !== Employee::ROLE_ADMIN) {
+        $user = App::user();
+        if ($user->role !== Employee::ROLE_ADMIN) {
             throw new ForbiddenHttpException();
         }
 
@@ -51,6 +55,30 @@ class EmployeeController extends Controller
             'index',
             [
                 'dataProvider' => $dataProvider,
+            ],
+        );
+    }
+
+    /**
+     * @throws ForbiddenHttpException
+     * @throws NotFoundHttpException
+     */
+    public function actionView(int $id): string
+    {
+        $user = App::user();
+        if (!$user->isAdmin()) {
+            throw new ForbiddenHttpException("Not for you");
+        }
+
+        $employee = Employee::findOne($id);
+        if (!$employee) {
+            throw new NotFoundHttpException('Wrong id');
+        }
+
+        return $this->render(
+            'view',
+            [
+                'employee' => $employee,
             ],
         );
     }

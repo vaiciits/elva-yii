@@ -24,20 +24,20 @@ echo GridView::widget([
         'id',
         'name',
         'surname',
-        'bithdate',
+        'birthdate',
         'access',
         [
             'attribute' => 'role',
             'label' => 'Role',
             'value' => function ($model) {
-                return ucfirst(strtolower(Role::tryFrom($model->role)->name));
+                return Role::uppercaseFirst($model->role);
             },
         ],
         [
             'class' => ActionColumn::class,
             'template' => '{view} {update} {delete}',
             'urlCreator' => function ($action, $model, $key, $index) {
-                return ["construction-site/{$model->id}/$action"];
+                return ["employee/{$model->id}/$action"];
             },
         ],
     ],
