@@ -48,6 +48,8 @@ return [
                 'GET construction-sites/' => 'construction-sites/index',
 
                 'construction-site/<id:\d+>/view' => 'construction-site/view',
+                'construction-site/<id:\d+>/update' => 'construction-site/update',
+                'construction-site/<id:\d+>/delete' => 'construction-site/delete',
 
                 'work-item/<id:\d+>/update' => 'work-item/update',
                 'work-item/<id:\d+>/delete' => 'work-item/delete',

@@ -100,6 +100,22 @@ class ConstructionSiteController extends Controller
         );
     }
 
+    public function actionUpdate(int $id): string|Response
+    {
+        $site = ConstructionSite::findOne($id);
+
+        if ($this->loadFromRequestAndSave($site)) {
+            return $this->redirect(['view', 'id' => $site->id]);
+        }
+
+        return $this->render(
+            'update',
+            [
+                'site' => $site,
+            ],
+        );
+    }
+
     /**
      * Handle POST data.
      */

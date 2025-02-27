@@ -10,9 +10,9 @@ use yii\widgets\ActiveForm;
 /** @var View $this */
 /** @var ConstructionSite $site */
 
-$this->title = 'Create Construction site';
+$this->title = 'Update Construction site';
 $this->params['breadcrumbs'][] = ['label' => 'Construction sites', 'url' => ['index']];
-$this->params['breadcrumbs'][] = 'Create';
+$this->params['breadcrumbs'][] = 'Update';
 ?>
 
 <div class="work-item-create">
@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = 'Create';
     ) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Create', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Update', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
