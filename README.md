@@ -59,10 +59,16 @@ Install composer packages (inside the container)
 composer install
 ```
 
+Init yii project
+
+```bash
+php init --env=Development
+```
+
 Run data seeders (inside the container)
 
 ```bash
-yii seed
+php yii seed
 ```
 
 ## Usage
