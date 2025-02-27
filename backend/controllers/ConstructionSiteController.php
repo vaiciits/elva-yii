@@ -114,6 +114,7 @@ class ConstructionSiteController extends Controller
 
     /**
      * @throws ForbiddenHttpException
+     * @throws Exception
      */
     public function actionDelete(int $id): Response
     {

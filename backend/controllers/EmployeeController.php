@@ -6,6 +6,7 @@ namespace backend\controllers;
 
 use backend\helpers\App;
 use common\models\Employee;
+use Exception;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
@@ -106,6 +107,26 @@ class EmployeeController extends Controller
                 'employee' => $employee,
             ],
         );
+    }
+
+    /**
+     * @throws ForbiddenHttpException
+     * @throws Exception
+     */
+    public function actionDelete(int $id): Response
+    {
+        $user = App::user();
+        if (!$user->isAdmin()) {
+            throw new ForbiddenHttpException("Not for you");
+        }
+
+        $site = Employee::findOne($id);
+
+        if (!$site->delete()) {
+            throw new Exception("Ooops");
+        }
+
+        return $this->redirect(Yii::$app->request->referrer);
     }
 
     /**
