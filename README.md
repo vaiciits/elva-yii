@@ -58,3 +58,19 @@ Run data seeders (inside the container)
 ```bash
 yii seed
 ```
+
+## Usage
+
+Main entrypoint at http://localhost:21080/
+
+### API
+
+All construction sites available at http://localhost:21080/construction-sites/ and supports `offset` and `limit` query params for pagination.
+
+Individual construction site and missing access are available here (example - http://localhost:21080/construction-sites/7)
+
+## Notes
+
+Exposed only `backend` due to development device limitations. Otherwise all frontend would have been in `frontend`.
+
+Used singular and plural forms for frontend and API endpoints respectively.

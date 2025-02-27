@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace common\models;
 
 use Yii;
+use yii\base\NotSupportedException;
+use yii\web\IdentityInterface;
 
 /**
  * This is the model class for table "EMPLOYEE".
@@ -18,7 +20,7 @@ use Yii;
  *
  * @property WorkItem[] $workItems
  */
-class Employee extends \yii\db\ActiveRecord
+class Employee extends \yii\db\ActiveRecord implements IdentityInterface
 {
 
 
@@ -66,5 +68,45 @@ class Employee extends \yii\db\ActiveRecord
     public function getWorkItems()
     {
         return $this->hasMany(WorkItem::class, ['employee_id' => 'id']);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function findIdentity($id)
+    {
+        return static::findOne(['id' => $id]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getId()
+    {
+        return $this->getPrimaryKey();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAuthKey()
+    {
+        return '';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function validateAuthKey($authKey)
+    {
+        return $this->getAuthKey() === $authKey;
     }
 }

@@ -4,6 +4,7 @@
 /** @var yii\bootstrap5\ActiveForm $form */
 /** @var \common\models\LoginForm $model */
 
+use common\models\Employee;
 use yii\bootstrap5\ActiveForm;
 use yii\bootstrap5\Html;
 
@@ -17,15 +18,14 @@ $this->title = 'Login';
 
         <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
 
-            <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
+        <?= $form->field($model, 'employee_id')->dropDownList(
+            Employee::find()->select(["(name + ' ' + surname) AS full_name", 'id'])->indexBy('id')->column(),
+            ['prompt' => 'Select employee'],
+        ) ?>
 
-            <?= $form->field($model, 'password')->passwordInput() ?>
-
-            <?= $form->field($model, 'rememberMe')->checkbox() ?>
-
-            <div class="form-group">
-                <?= Html::submitButton('Login', ['class' => 'btn btn-primary btn-block', 'name' => 'login-button']) ?>
-            </div>
+        <div class="form-group">
+            <?= Html::submitButton('Login', ['class' => 'btn btn-primary btn-block', 'name' => 'login-button']) ?>
+        </div>
 
         <?php ActiveForm::end(); ?>
     </div>
