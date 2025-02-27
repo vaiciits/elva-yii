@@ -63,9 +63,7 @@ class ConstructionSiteService
     public function getAvailableSitesByEmployee(Employee $employee): array
     {
         $query = ConstructionSite::find()
-            ->where([
-                ['>=', 'access', $employee->access],
-            ]);
+            ->where(['>=', 'access', $employee->access]);
 
         if ($employee->role === Employee::ROLE_ADMIN) {
             return $query->all();
@@ -74,7 +72,9 @@ class ConstructionSiteService
         if ($employee->role === Employee::ROLE_MANAGER) {
             return $query
                 ->andWhere([
-                    'id' => array_column(
+                    'IN',
+                    'id',
+                    array_column(
                         $employee->workItems,
                         'construction_site_id'
                     ),
