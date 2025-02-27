@@ -7,6 +7,8 @@ namespace backend\controllers;
 use common\models\Employee;
 use common\models\WorkItem;
 use common\repositories\WorkItemRepository;
+use common\services\ConstructionSiteService;
+use common\services\EmployeeService;
 use common\services\WorkItemService;
 use Exception;
 use Yii;
@@ -72,7 +74,6 @@ class WorkItemController extends Controller
             throw new Exception("Ooops");
         }
 
-        // return $this->redirect(['index']);
         return $this->redirect(Yii::$app->request->referrer);
     }
 
@@ -92,7 +93,6 @@ class WorkItemController extends Controller
 
         return $this->render('update', [
             'workItem' => $workItem,
-            'isCreate' => false,
         ]);
     }
 
@@ -104,9 +104,15 @@ class WorkItemController extends Controller
             return $this->redirect(['view', 'id' => $workItem->id]);
         }
 
-        return $this->render('update', [
+        /** @var Employee */
+        $employee = Yii::$app->user->getIdentity();
+
+        return $this->render('create', [
             'workItem' => $workItem,
-            'isCreate' => true,
+            'availableSites' => new ConstructionSiteService()
+                ->getAvailableSiteIdsByEmployee($employee),
+            'allowedEmployees' => new EmployeeService()
+                ->getAvailableEmployeeIds($employee),
         ]);
     }
 

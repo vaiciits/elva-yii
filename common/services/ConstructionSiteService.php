@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace common\services;
 
 use common\factories\ConstructionSiteFactory;
+use common\models\ConstructionSite;
+use common\models\Employee;
 use common\repositories\ConstructionSiteRepository;
 use common\structures\ConstructionSiteResponse;
 use common\structures\PagedConstructionSites;
@@ -53,5 +55,28 @@ class ConstructionSiteService
             $offset,
             $limit,
         );
+    }
+
+    /**
+     * @return ConstructionSite[]
+     */
+    public function getAvailableSiteIdsByEmployee(Employee $employee): array
+    {
+        if ($employee->role === Employee::ROLE_ADMIN) {
+            return ConstructionSite::find()->all();
+        }
+
+        if ($employee->role === Employee::ROLE_MANAGER) {
+            return ConstructionSite::find()
+                ->where([
+                    'id' => array_column(
+                        $employee->workItems,
+                        'construction_site_id'
+                    ),
+                ])
+                ->all();
+        }
+
+        return [];
     }
 }
