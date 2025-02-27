@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace backend\controllers;
 
+use backend\helpers\App;
 use common\models\ConstructionSite;
 use common\models\Employee;
 use common\repositories\ConstructionSiteRepository;
@@ -42,8 +43,7 @@ class ConstructionSiteController extends Controller
      */
     public function actionIndex(): string
     {
-        /** @var Employee */
-        $employee = Yii::$app->user->getIdentity();
+        $employee = App::user();
         if ($employee->role !== Employee::ROLE_ADMIN) {
             throw new ForbiddenHttpException();
         }
@@ -63,10 +63,12 @@ class ConstructionSiteController extends Controller
         );
     }
 
+    /**
+     * @throws ForbiddenHttpException
+     */
     public function actionView(int $id): string
     {
-        /** @var Employee */
-        $employee = Yii::$app->user->getIdentity();
+        $employee = App::user();
         $site = new ConstructionSiteRepository()->getOne($id);
 
         if ($site->access < $employee->access) {
@@ -85,10 +87,12 @@ class ConstructionSiteController extends Controller
         );
     }
 
+    /**
+     * @throws ForbiddenHttpException
+     */
     public function actionCreate(): string|Response
     {
-        /** @var Employee */
-        $employee = Yii::$app->user->getIdentity();
+        $employee = App::user();
 
         if (!$employee->isAdmin()) {
             throw new ForbiddenHttpException();
@@ -108,10 +112,12 @@ class ConstructionSiteController extends Controller
         );
     }
 
+    /**
+     * @throws ForbiddenHttpException
+     */
     public function actionDelete(int $id): Response
     {
-        /** @var Employee */
-        $employee = Yii::$app->user->getIdentity();
+        $employee = App::user();
 
         if (!$employee->isAdmin()) {
             throw new ForbiddenHttpException();
@@ -126,10 +132,12 @@ class ConstructionSiteController extends Controller
         return $this->redirect(Yii::$app->request->referrer);
     }
 
+    /**
+     * @throws ForbiddenHttpException
+     */
     public function actionUpdate(int $id): string|Response
     {
-        /** @var Employee */
-        $employee = Yii::$app->user->getIdentity();
+        $employee = App::user();
 
         if (!$employee->isAdmin()) {
             throw new ForbiddenHttpException();
