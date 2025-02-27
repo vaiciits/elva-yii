@@ -12,6 +12,13 @@ $this->title = 'Work items';
 
 echo Html::tag('h1', Html::encode($this->title));
 
+$employee = Yii::$app->user->identity;
+if (in_array($employee->role, [Employee::ROLE_ADMIN, Employee::ROLE_MANAGER])) {
+    echo Html::beginTag('p');
+    echo Html::a('Create Work Item', ['create'], ['class' => 'btn btn-success']);
+    echo Html::endTag('p');
+}
+
 echo GridView::widget([
     'dataProvider' => $dataProvider,
     'columns' => [
@@ -40,13 +47,16 @@ echo GridView::widget([
         ],
         [
             'class' => ActionColumn::class,
-            'template' => '{view} {update} {delete}',
+            'template' => '{update} {delete}',
+            'urlCreator' => function ($action, $model, $key, $index) {
+                return ["work-item/{$model->id}/$action"];
+            },
             'visibleButtons' => [
-                'update' => function ($model) {
-                    return Yii::$app->user->identity->role === Employee::ROLE_ADMIN;
+                'update' => function ($model) use ($employee) {
+                    return $employee->role === Employee::ROLE_ADMIN;
                 },
-                'delete' => function ($model) {
-                    return Yii::$app->user->identity->role === Employee::ROLE_ADMIN;
+                'delete' => function ($model) use ($employee) {
+                    return $employee->role === Employee::ROLE_ADMIN;
                 },
             ],
         ],

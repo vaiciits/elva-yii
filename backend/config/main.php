@@ -46,6 +46,9 @@ return [
             'rules' => [
                 'GET construction-sites/<id:\d+>' => 'construction-sites/get',
                 'GET construction-sites/' => 'construction-sites/index',
+
+                'work-item/<id:\d+>/update' => 'work-item/update', // Custom rule
+                'work-item/<id:\d+>/delete' => 'work-item/delete', // Optional for delete
             ],
         ],
     ],
