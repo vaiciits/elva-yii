@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace backend\controllers;
 
 use common\models\Employee;
-use common\models\WorkItem;
 use common\repositories\WorkItemRepository;
+use common\services\WorkItemService;
 use Exception;
 use Yii;
 use yii\data\ActiveDataProvider;
@@ -46,19 +46,30 @@ class WorkItemController extends Controller
     {
         /** @var Employee */
         $employee = Yii::$app->user->getIdentity();
-        if ($employee->role !== Employee::ROLE_ADMIN) {
-            throw new ForbiddenHttpException("Not allowed.");
-        }
-
-        $workItem = WorkItem::findOne($id);
-        if (!$workItem) {
-            throw new NotFoundHttpException("This work item does not exist");
-        }
+        $workItem = new WorkItemService()->getItemByEmployee($id, $employee);
 
         if (!$workItem->delete()) {
             throw new Exception("Ooops");
         }
 
-        return $this->redirect(['index']);
+        // return $this->redirect(['index']);
+        return $this->redirect(Yii::$app->request->referrer);
+    }
+
+    /**
+     * @throws ForbiddenHttpException
+     * @throws NotFoundHttpException
+     */
+    public function actionUpdate(int $id): string|Response
+    {
+        /** @var Employee */
+        $employee = Yii::$app->user->getIdentity();
+        $workItem = new WorkItemService()->getItemByEmployee($id, $employee);
+
+        if ($workItem->load(Yii::$app->request->post()) && $workItem->save()) {
+            return $this->redirect(['index']);
+        }
+
+        return $this->render('update', ['workItem' => $workItem]);
     }
 }
