@@ -130,6 +130,30 @@ class EmployeeController extends Controller
     }
 
     /**
+     * @throws ForbiddenHttpException
+     */
+    public function actionUpdate(int $id): string|Response
+    {
+        $user = App::user();
+        if (!$user->isAdmin()) {
+            throw new ForbiddenHttpException("Not for you");
+        }
+
+        $employee = Employee::findOne($id);
+
+        if ($this->loadFromRequestAndSave($employee)) {
+            return $this->redirect(['view', 'id' => $employee->id]);
+        }
+
+        return $this->render(
+            'update',
+            [
+                'employee' => $employee,
+            ],
+        );
+    }
+
+    /**
      * Handle POST data.
      */
     private function loadFromRequestAndSave(Employee $employee): bool
