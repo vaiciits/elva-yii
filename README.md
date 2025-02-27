@@ -41,7 +41,7 @@ Uzdevums
 
 ## Setup
 
-Setup docker. Don't worry for configurator for failing.
+Setup docker. Don't worry about configurator failing.
 
 ```bash
 docker-compose up -d
