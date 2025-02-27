@@ -8,6 +8,7 @@ use common\models\ConstructionSite;
 use common\models\Employee;
 use common\repositories\ConstructionSiteRepository;
 use common\services\WorkItemService;
+use Exception;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
@@ -86,6 +87,13 @@ class ConstructionSiteController extends Controller
 
     public function actionCreate(): string|Response
     {
+        /** @var Employee */
+        $employee = Yii::$app->user->getIdentity();
+
+        if (!$employee->isAdmin()) {
+            throw new ForbiddenHttpException();
+        }
+
         $site = new ConstructionSite();
 
         if ($this->loadFromRequestAndSave($site)) {
@@ -100,8 +108,33 @@ class ConstructionSiteController extends Controller
         );
     }
 
+    public function actionDelete(int $id): Response
+    {
+        /** @var Employee */
+        $employee = Yii::$app->user->getIdentity();
+
+        if (!$employee->isAdmin()) {
+            throw new ForbiddenHttpException();
+        }
+
+        $site = ConstructionSite::findOne($id);
+
+        if (!$site->delete()) {
+            throw new Exception("Ooops");
+        }
+
+        return $this->redirect(Yii::$app->request->referrer);
+    }
+
     public function actionUpdate(int $id): string|Response
     {
+        /** @var Employee */
+        $employee = Yii::$app->user->getIdentity();
+
+        if (!$employee->isAdmin()) {
+            throw new ForbiddenHttpException();
+        }
+
         $site = ConstructionSite::findOne($id);
 
         if ($this->loadFromRequestAndSave($site)) {
