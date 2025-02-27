@@ -60,15 +60,20 @@ class ConstructionSiteService
     /**
      * @return ConstructionSite[]
      */
-    public function getAvailableSiteIdsByEmployee(Employee $employee): array
+    public function getAvailableSitesByEmployee(Employee $employee): array
     {
+        $query = ConstructionSite::find()
+            ->where([
+                ['>=', 'access', $employee->access],
+            ]);
+
         if ($employee->role === Employee::ROLE_ADMIN) {
-            return ConstructionSite::find()->all();
+            return $query->all();
         }
 
         if ($employee->role === Employee::ROLE_MANAGER) {
-            return ConstructionSite::find()
-                ->where([
+            return $query
+                ->andWhere([
                     'id' => array_column(
                         $employee->workItems,
                         'construction_site_id'

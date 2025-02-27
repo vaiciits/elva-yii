@@ -116,4 +116,9 @@ class Employee extends \yii\db\ActiveRecord implements IdentityInterface
     {
         return implode(' ', [$this->name, $this->surname]);
     }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === self::ROLE_ADMIN;
+    }
 }

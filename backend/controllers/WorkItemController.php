@@ -13,6 +13,7 @@ use common\services\WorkItemService;
 use Exception;
 use Yii;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
@@ -20,6 +21,24 @@ use yii\web\Response;
 
 class WorkItemController extends Controller
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ];
+    }
+
     public function actionIndex(): string
     {
         /** @var Employee */
@@ -110,9 +129,9 @@ class WorkItemController extends Controller
         return $this->render('create', [
             'workItem' => $workItem,
             'availableSites' => new ConstructionSiteService()
-                ->getAvailableSiteIdsByEmployee($employee),
+                ->getAvailableSitesByEmployee($employee),
             'allowedEmployees' => new EmployeeService()
-                ->getAvailableEmployeeIds($employee),
+                ->getAvailableEmployees($employee),
         ]);
     }
 

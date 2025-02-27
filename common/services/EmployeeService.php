@@ -12,7 +12,7 @@ class EmployeeService
     /**
      * @return Employee[]
      */
-    public function getAvailableEmployeeIds(Employee $employee): array
+    public function getAvailableEmployees(Employee $employee): array
     {
         if ($employee->role === Employee::ROLE_ADMIN) {
             return Employee::find()->all();
